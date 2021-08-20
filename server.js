@@ -48,6 +48,18 @@ app.post("/api/add-movie", (req, res) => {
 });
 
 
+app.post("/api/update-review", (req, res) => {
+    db.query(
+      `UPDATE reviews SET review = ? WHERE id = ?`, [req.body.review, req.body.id],
+      function (err, results) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(`The review to the Database Successfully!`);
+        }
+      }
+    );
+  });
 
 app.use((req, res) => {
   res.status(404).end();
