@@ -33,6 +33,22 @@ app.get("/api/movies", (req, res) => {
   });
 });
 
+app.post("/api/add-movie", (req, res) => {
+  db.query(
+    `INSERT INTO movies (movie_name)
+    VALUES (?)`, req.body.movie,
+    function (err, results) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(`The ${req.body.movie} movie was added to the Database Successfully!`);
+      }
+    }
+  );
+});
+
+
+
 app.use((req, res) => {
   res.status(404).end();
 });
