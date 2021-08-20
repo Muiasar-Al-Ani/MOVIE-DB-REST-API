@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Connects to the database server
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -15,6 +16,7 @@ const db = mysql.createConnection({
   database: "movie_db",
 });
 
+// Checks if an error occurred while connecting to the database server
 db.connect(err => {
   if (err) {
     console.log(err);
@@ -23,6 +25,7 @@ db.connect(err => {
   }
 });
 
+// Get all the movies in the database
 app.get("/api/movies", (req, res) => {
   db.query("SELECT * FROM movies", function (err, results) {
     if (err) {
@@ -33,6 +36,7 @@ app.get("/api/movies", (req, res) => {
   });
 });
 
+// Adds a review to a movie in the database 
 app.post("/api/add-movie", (req, res) => {
   db.query(
     `INSERT INTO movies (movie_name)
@@ -48,6 +52,7 @@ app.post("/api/add-movie", (req, res) => {
 });
 
 
+// Updates a review to a movie by id
 app.post("/api/update-review", (req, res) => {
     db.query(
       `UPDATE reviews SET review = ? WHERE id = ?`, [req.body.review, req.body.id],
@@ -62,6 +67,7 @@ app.post("/api/update-review", (req, res) => {
   });
 
 
+  // Deletes a movie by id
   app.delete("/api/movie/:id", (req, res) => {
       const {id} = req.params;
     db.query(
@@ -76,10 +82,12 @@ app.post("/api/update-review", (req, res) => {
     );
   });
 
+// Default response for any other request (Not Found)
 app.use((req, res) => {
   res.status(404).end();
 });
 
+// Listens to the port
 app.listen(PORT, () => {
   console.log(`connected to port ${PORT}`);
 });
