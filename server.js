@@ -61,6 +61,21 @@ app.post("/api/update-review", (req, res) => {
     );
   });
 
+
+  app.delete("/api/movie/:id", (req, res) => {
+      const {id} = req.params;
+    db.query(
+      `DELETE FROM movies WHERE id = ?`, id,
+      function (err, results) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(`This movie was deleted from the Database Successfully!`);
+        }
+      }
+    );
+  });
+
 app.use((req, res) => {
   res.status(404).end();
 });
